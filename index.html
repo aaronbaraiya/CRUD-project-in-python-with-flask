@@ -1,0 +1,107 @@
+
+<!--this is where the basic web page will be -->
+<h1>Employees management Page</h1>
+
+
+<form action="/add" method="post">
+ 
+                <label for="name">Employee Name:</label><br>
+                <input type="text" pattern = "[A-Za-z]+" id="name" name="name" required><br>
+
+                <label for="age">Age:</label><br>
+                <input type="number" id="age" name="age" min="1" max="100" step="1" required><br>
+                
+
+                <label for="role">Role:</label><br>
+            
+                <select id="role" name="role" required>
+                    <option>Admin</option>
+                    <option>Employee</option>
+                    <option>Intern</option>
+                </select>
+
+                <br>
+                <br>
+                <button type="submit">Submit</button>
+
+</form>
+
+<br>
+
+<div class="flashes">
+     {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+                
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+
+ <h2>Employee Records</h2>
+
+    <table>
+        {% for employee in employees %}
+        <tr>
+            <td>{{employee.name}}</td> 
+            <td>{{employee.age}}</td>
+            <td>{{employee.role}}</td>
+            <td>{{ employee.id }}</td>
+        
+            <td>
+               
+                <a href="/update/{{ employee.id }}"   class="inline-link">
+                    edit 
+                </a>
+                <form method="POST" action="{{ url_for('main.delete_employee', id = employee.id) }}">
+                    <button type="submit" class="delete-button-as-link"  class="inline-button">delete</button>
+                </form>
+               
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+<head>
+    <style>
+
+        .inline-link,
+.inline-button {
+  display: inline-block;
+  vertical-align: middle; /* Ensures consistent vertical alignment */
+  margin: 0 5px; /* Adds space around the elements */
+}
+
+        .delete-button-as-link {
+  /* Remove default button styling */
+  background: none;
+  border: none;
+  padding: 0;
+  
+  /* Set pointer cursor to indicate it's clickable */
+  cursor: pointer;
+  
+  /* Inherit font styles from the parent element */
+  font: inherit;
+  
+  /* Style the text to look like a hyperlink */
+  
+  text-decoration: none; /* No underline by default */
+  
+  
+}
+
+.delete-button-as-link:hover {
+ 
+  text-decoration: underline;
+}
+
+    </style>
+</head>
